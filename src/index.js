@@ -1,0 +1,131 @@
+import React from "react";
+import ReactDOM from "react-dom";
+import styled from "styled-components";
+import { StylesProvider } from "@material-ui/styles";
+import { ThemeProvider } from "@material-ui/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Avatar from "@material-ui/core/Avatar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import IconButton from "@material-ui/core/IconButton";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import SearchIcon from "@material-ui/icons/Search";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import theme from "./utils/createTheme";
+import getThumbnail from "./utils/getThumbnail";
+import { PostsContext, PostsProvider } from "./components/PostsProvider";
+import CurrentlyReading from "./components/CurrentlyReading";
+import TopPost from "./components/TopPost";
+
+const NavigationMenu = styled(AppBar)`
+  background: transparent;
+  box-shadow: none;
+`;
+
+const MainContent = styled.div`
+  background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.1) 0%,
+      rgba(0, 0, 0, 0.39) 67%,
+      rgba(0, 0, 0, 1) 100%
+    ),
+    url(${props => props.backgroundImage}) 0% 0% / cover no-repeat;
+`;
+
+const NavigationText = styled.div`
+  flex-grow: 1;
+`;
+
+function MainContentSection() {
+  const postsContext = React.useContext(PostsContext);
+  const firstPostThumbnail = postsContext.posts[0].data.preview;
+  return (
+    <MainContent backgroundImage={getThumbnail(firstPostThumbnail)}>
+      <Navigation />
+      <TopPost />
+    </MainContent>
+  );
+}
+
+function Navigation() {
+  return (
+    <NavigationMenu position="static" style={{}}>
+      <Toolbar>
+        <NavigationText>
+          <Typography variant="h6">Trending</Typography>
+          <Typography variant="subtitle2">Today's popular posts</Typography>
+        </NavigationText>
+        <IconButton aria-label="search" style={{ color: "#fff" }}>
+          <SearchIcon />
+        </IconButton>
+      </Toolbar>
+    </NavigationMenu>
+  );
+}
+
+function PostListings() {
+  const postsConsumer = React.useContext(PostsContext);
+  return (
+    <List style={{ background: "black", color: "white" }}>
+      {/* We slice in order to separate the rest of the articles from the top one */}
+      {postsConsumer.posts.slice(1).map(({ data }, index) => (
+        // We add 1 to currentIndex because we have to take into account the top post
+        <ListItem
+          key={index}
+          alignItems="center"
+          onClick={() => postsConsumer.setCurrentPost(index + 1)}
+        >
+          <ListItemAvatar>
+            <Avatar
+              style={{ borderRadius: "10px" }}
+              alt="post thumbnail"
+              src={getThumbnail(data.preview)}
+            />
+          </ListItemAvatar>
+          <ListItemText
+            primary={data.title}
+            secondary={
+              <Typography style={{ color: "#989898" }}>
+                {data.subreddit}
+              </Typography>
+            }
+          />
+        </ListItem>
+      ))}
+    </List>
+  );
+}
+
+function PageSetup() {
+  const postsConsumer = React.useContext(PostsContext);
+  return (
+    <div>
+      {postsConsumer.posts.length && (
+        <>
+          <MainContentSection />
+          <CurrentlyReading />
+          <PostListings />
+        </>
+      )}
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <StylesProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <PostsProvider>
+          <CssBaseline />
+          <PageSetup />
+        </PostsProvider>
+      </ThemeProvider>
+    </StylesProvider>
+  );
+}
+
+const rootElement = document.getElementById("root");
+ReactDOM.render(<App />, rootElement);
