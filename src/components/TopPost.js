@@ -17,7 +17,9 @@ const TopPostCard = styled(Card)`
   background: transparent;
 `;
 
-const Title = styled(Typography)``;
+const Title = styled(Typography)`
+  font-family: 'Inter', serif;
+`;
 
 const Subtitle = styled(Typography)`
   display: -webkit-box;
@@ -26,13 +28,15 @@ const Subtitle = styled(Typography)`
   overflow: hidden;
 `;
 
+const PostStats = styled(Button)`
+  color: #a6a5a5;
+`;
+
 function AuthorDetails({ author }) {
   return (
     <CardHeader
       avatar={<Avatar aria-label="profile pic">R</Avatar>}
-      title={
-        <Typography style={{ color: "#337AE6" }}>{ author }</Typography>
-      }
+      title={<Typography style={{ color: "#337AE6" }}>{author}</Typography>}
     />
   );
 }
@@ -49,14 +53,14 @@ function TitleAndSubtitle({ title, selftext }) {
 function NumCommentsAndLikes({ num_comments, score }) {
   return (
     <CardActions>
-      <Button disabled>
+      <PostStats disabled>
         <CommentIcon />
         {formatNumK(num_comments)}
-      </Button>
-      <Button disabled>
+      </PostStats>
+      <PostStats disabled>
         <FavoriteIcon />
         {formatNumK(score)}
-      </Button>
+      </PostStats>
     </CardActions>
   );
 }
@@ -64,7 +68,13 @@ function NumCommentsAndLikes({ num_comments, score }) {
 export default function TopPost() {
   // The top post is the first post, so we're using the 0th index throughout this component
   const postsConsumer = useContext(PostsContext);
-  const { title, selftext, num_comments, score } = postsConsumer.posts[0].data;
+  const {
+    author,
+    title,
+    selftext,
+    num_comments,
+    score
+  } = postsConsumer.posts[0].data;
   return (
     <TopPostCard onClick={() => postsConsumer.setCurrentPost(0)}>
       <AuthorDetails author={author} />

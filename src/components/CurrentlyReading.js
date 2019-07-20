@@ -123,7 +123,7 @@ export default function CurrentlyReading() {
           <CardHeader
             avatar={<Avatar aria-label="Recipe">R</Avatar>}
             action={
-              <IconButton style>
+              <IconButton>
                 <CommentIcon />
               </IconButton>
             }
