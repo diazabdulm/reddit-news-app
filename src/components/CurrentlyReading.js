@@ -2,6 +2,7 @@
 // TODO: Fix chip not showing up
 // TODO: Add variable representing currentPost
 import React from "react";
+import moment from "moment";
 import styled from "styled-components";
 import AppBar from "@material-ui/core/AppBar";
 import Avatar from "@material-ui/core/Avatar";
@@ -28,6 +29,7 @@ const NavigationBar = styled(AppBar)`
   background: transparent;
   box-shadow: none;
   align-items: flex-end;
+  padding-top: 1rem;
 `;
 
 const HeaderCard = styled(Card)`
@@ -44,11 +46,34 @@ const HeaderSection = styled.div`
     url(${props => props.backgroundImage}) 0% 0% / cover no-repeat;
 `;
 
+const Close = styled(IconButton)`
+  color: #fff;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  :hover {
+    background: rgba(255, 255, 255, 0.35);
+  }
+`;
+
+const Title = styled(Typography)`
+  font-family: "Inter", sans-serif;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  overflow: hidden;
+  font-weight: 700;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  color: #fff;
+  padding-bottom: 11rem;
+`;
+
 const PreviewText = styled(Typography)`
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  color: #fff;
 `;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -83,14 +108,14 @@ export default function CurrentlyReading() {
       <HeaderSection backgroundImage={getThumbnail(firstPostThumbnail)}>
         <NavigationBar>
           <Toolbar>
-            <IconButton
+            <Close
               edge="end"
               color="inherit"
               onClick={handleDialogClose}
               aria-label="Close Post"
             >
-              <CloseIcon />
-            </IconButton>
+              <CloseIcon style={{ fontSize: "2rem" }} />
+            </Close>
           </Toolbar>
         </NavigationBar>
         <HeaderCard>
@@ -103,7 +128,7 @@ export default function CurrentlyReading() {
             }
           />
           <CardContent>
-            <Typography>{currentPost.title}</Typography>
+            <Title variant="h4">{currentPost.title}</Title>
             <PreviewText>{currentPost.selftext}</PreviewText>
           </CardContent>
           <CardActions>
@@ -122,19 +147,15 @@ export default function CurrentlyReading() {
         <Card style={{ background: "transparent", borderRadius: 0 }}>
           <CardHeader
             avatar={<Avatar aria-label="Recipe">R</Avatar>}
-            action={
-              <IconButton>
-                <CommentIcon />
-              </IconButton>
-            }
+            action={<Button style={{background: '#337AE6', color: '#fff'}}>Follow</Button>}
             title={
-              <Typography style={{ color: "#337AE6" }}>
+              <Typography style={{ color: "#337AE6", fontWeight: "600" }}>
                 {currentPost.author}
               </Typography>
             }
             subheader={
               <Typography style={{ color: "#969696" }}>
-                {currentPost.created_utc}
+                {moment.unix(currentPost.created_utc).fromNow()}
               </Typography>
             }
           />

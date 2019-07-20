@@ -9,10 +9,30 @@ import SearchIcon from "@material-ui/icons/Search";
 const NavigationMenu = styled(AppBar)`
   background: transparent;
   box-shadow: none;
+  padding-top: 1rem;
 `;
 
 const NavigationText = styled.div`
   flex-grow: 1;
+`;
+
+const NavigationTitle = styled(Typography)`
+  font-weight: 700;
+  margin-bottom: .5rem;
+`;
+
+const NavigationSubtitle = styled(Typography)`
+  color: rgba(255, 255, 255, 0.6);
+`;
+
+const Search = styled(IconButton)`
+  color: #fff;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  :hover {
+    background: rgba(255, 255, 255, 0.35);
+  }
 `;
 
 export default function Navigation() {
@@ -20,12 +40,14 @@ export default function Navigation() {
     <NavigationMenu position="static" style={{}}>
       <Toolbar>
         <NavigationText>
-          <Typography variant="h6">Trending</Typography>
-          <Typography variant="subtitle2">Today's popular posts</Typography>
+          <NavigationTitle variant="h4">Trending</NavigationTitle>
+          <NavigationSubtitle variant="subtitle2">
+            Today's popular posts
+          </NavigationSubtitle>
         </NavigationText>
-        <IconButton aria-label="search" style={{ color: "#fff" }}>
-          <SearchIcon />
-        </IconButton>
+        <Search aria-label="search">
+          <SearchIcon style={{ fontSize: '2rem' }} />
+        </Search>
       </Toolbar>
     </NavigationMenu>
   );

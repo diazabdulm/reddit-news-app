@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import styled from "styled-components";
 import { StylesProvider } from "@material-ui/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import AppBar from "@material-ui/core/AppBar";
 import Avatar from "@material-ui/core/Avatar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import List from "@material-ui/core/List";
@@ -26,6 +25,13 @@ const MainContent = styled.div`
       rgba(0, 0, 0, 1) 100%
     ),
     url(${props => props.backgroundImage}) 0% 0% / cover no-repeat;
+`;
+
+const PostListingTitle = styled(Typography)`
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `;
 
 function MainContentSection() {
@@ -51,15 +57,19 @@ function PostListings() {
           alignItems="center"
           onClick={() => postsConsumer.setCurrentPost(index + 1)}
         >
-          <ListItemAvatar>
+          <ListItemAvatar style={{ minWidth: "96px" }}>
             <Avatar
-              style={{ borderRadius: "10px" }}
+              style={{ borderRadius: "10px", width: "80px", height: "80px" }}
               alt="post thumbnail"
               src={getThumbnail(data.preview)}
             />
           </ListItemAvatar>
           <ListItemText
-            primary={data.title}
+            primary={
+              <PostListingTitle variant="body1" style={{ fontWeight: 600 }}>
+                {data.title}
+              </PostListingTitle>
+            }
             secondary={
               <Typography style={{ color: "#989898" }}>
                 {data.subreddit}

@@ -15,28 +15,43 @@ import { PostsContext } from "./PostsProvider";
 const TopPostCard = styled(Card)`
   border-radius: 0;
   background: transparent;
+  padding-top: 11rem;
+`;
+
+const Author = styled(CardHeader)`
+  padding-bottom: 0px;
 `;
 
 const Title = styled(Typography)`
-  font-family: 'Inter', serif;
+  font-family: "Inter", sans-serif;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  overflow: hidden;
+  font-weight: 700;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 `;
 
 const Subtitle = styled(Typography)`
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 `;
 
+const AuthorName = styled(Typography)`
+  font-weight: 700;
+`;
+
 const PostStats = styled(Button)`
-  color: #a6a5a5;
+  color: #a6a5a5 !important;
 `;
 
 function AuthorDetails({ author }) {
   return (
-    <CardHeader
+    <Author
       avatar={<Avatar aria-label="profile pic">R</Avatar>}
-      title={<Typography style={{ color: "#337AE6" }}>{author}</Typography>}
+      title={<AuthorName style={{ color: "#337AE6" }}>{author}</AuthorName>}
     />
   );
 }
@@ -44,7 +59,9 @@ function AuthorDetails({ author }) {
 function TitleAndSubtitle({ title, selftext }) {
   return (
     <CardContent style={{ color: "#fff" }}>
-      <Title gutterBottom>{title}</Title>
+      <Title variant="h4" gutterBottom>
+        {title}
+      </Title>
       <Subtitle>{selftext}</Subtitle>
     </CardContent>
   );
@@ -54,11 +71,11 @@ function NumCommentsAndLikes({ num_comments, score }) {
   return (
     <CardActions>
       <PostStats disabled>
-        <CommentIcon />
+        <CommentIcon style={{ marginRight: '.5rem' }} />
         {formatNumK(num_comments)}
       </PostStats>
       <PostStats disabled>
-        <FavoriteIcon />
+        <FavoriteIcon style={{ marginRight: '.5rem' }} />
         {formatNumK(score)}
       </PostStats>
     </CardActions>
@@ -78,7 +95,7 @@ export default function TopPost() {
   return (
     <TopPostCard onClick={() => postsConsumer.setCurrentPost(0)}>
       <AuthorDetails author={author} />
-      <TitleAndSubtitle title={title} subtitle={selftext} />
+      <TitleAndSubtitle title={title} selftext={selftext} />
       <NumCommentsAndLikes num_comments={num_comments} score={score} />
     </TopPostCard>
   );
