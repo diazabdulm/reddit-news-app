@@ -30,6 +30,7 @@ const Search = styled(IconButton)`
   padding: 0.5rem;
   background: rgba(255, 255, 255, 0.35);
   border-radius: 50%;
+  align-self: flex-start;
   :hover {
     background: rgba(255, 255, 255, 0.35);
   }
@@ -37,7 +38,7 @@ const Search = styled(IconButton)`
 
 export default function Navigation() {
   return (
-    <NavigationMenu position="static" style={{}}>
+    <NavigationMenu position="static">
       <Toolbar>
         <NavigationText>
           <NavigationTitle variant="h4">Trending</NavigationTitle>

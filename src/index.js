@@ -84,16 +84,14 @@ function PostListings() {
 
 function PageSetup() {
   const postsConsumer = React.useContext(PostsContext);
-  return (
-    <div>
-      {postsConsumer.posts.length && (
-        <>
-          <MainContentSection />
-          <CurrentlyReading />
-          <PostListings />
-        </>
-      )}
-    </div>
+  return postsConsumer.posts.length ? (
+    <>
+      <MainContentSection />
+      <CurrentlyReading />
+      <PostListings />
+    </>
+  ) : (
+    <div>Loading...</div>
   );
 }
 

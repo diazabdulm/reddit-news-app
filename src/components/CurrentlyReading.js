@@ -5,7 +5,6 @@ import React from "react";
 import moment from "moment";
 import styled from "styled-components";
 import AppBar from "@material-ui/core/AppBar";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -58,22 +57,17 @@ const Close = styled(IconButton)`
 
 const Title = styled(Typography)`
   font-family: "Inter", sans-serif;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  overflow: hidden;
   font-weight: 700;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
   color: #fff;
   padding-bottom: 11rem;
 `;
 
-const PreviewText = styled(Typography)`
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  color: #fff;
+const TimeStamp = styled(Typography)`
+  flex-grow: 1;
+`;
+
+const PostStats = styled(Button)`
+  color: #8D8D8D !important;
 `;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -129,36 +123,24 @@ export default function CurrentlyReading() {
           />
           <CardContent>
             <Title variant="h4">{currentPost.title}</Title>
-            <PreviewText>{currentPost.selftext}</PreviewText>
           </CardContent>
           <CardActions>
-            <Button disabled>
-              <CommentIcon />
-              {formatNumK(currentPost.num_comments)}
-            </Button>
-            <Button disabled>
-              <FavoriteIcon />
-              {formatNumK(currentPost.num_comments)}
-            </Button>
+            <TimeStamp style={{ color: "#969696" }}>
+              {moment.unix(currentPost.created_utc).fromNow()}
+            </TimeStamp>
+            <PostStats disabled>
+              <CommentIcon style={{ marginRight: '.5rem', color: '#8D8D8D' }} />
+              <Typography style={{ fontWeight: '600' }}>{formatNumK(currentPost.num_comments)}</Typography>
+            </PostStats>
+            <PostStats disabled>
+              <FavoriteIcon style={{ marginRight: '.5rem', color: '#8D8D8D' }} />
+              <Typography style={{ fontWeight: '600' }}>{formatNumK(currentPost.score)}</Typography>
+            </PostStats>
           </CardActions>
         </HeaderCard>
       </HeaderSection>
       <div>
         <Card style={{ background: "transparent", borderRadius: 0 }}>
-          <CardHeader
-            avatar={<Avatar aria-label="Recipe">R</Avatar>}
-            action={<Button style={{background: '#337AE6', color: '#fff'}}>Follow</Button>}
-            title={
-              <Typography style={{ color: "#337AE6", fontWeight: "600" }}>
-                {currentPost.author}
-              </Typography>
-            }
-            subheader={
-              <Typography style={{ color: "#969696" }}>
-                {moment.unix(currentPost.created_utc).fromNow()}
-              </Typography>
-            }
-          />
           <CardContent
             style={{ color: "#fff" }}
             dangerouslySetInnerHTML={{ __html: currentPost.selftext_html }}
