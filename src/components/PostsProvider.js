@@ -11,6 +11,20 @@ function PostsProvider(props) {
   // update posts state when data loads
   React.useEffect(() => setPosts(data ? data.data.children : []), [data]);
 
+  // function searchSubreddits(subreddit) {
+  //   const { data } = useFetch("https://swapi.co/api/people/1");
+  // }
+
+  const useFetch2 = (url, options) => {
+    const [response, setResponse] = React.useState(null);
+    useEffect(async () => {
+      const res = await fetch(url, options);
+      const json = await res.json();
+      setResponse(json);
+    }, []);
+    return response;
+  };
+
   return (
     <PostsContext.Provider
       value={{
